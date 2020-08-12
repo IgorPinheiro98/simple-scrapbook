@@ -1,4 +1,4 @@
-class TaskList {
+/*class TaskList {
   constructor() {
     this.titleInput = document.getElementById("messageTitle");
     this.editTitleInput = document.getElementById("editMessageTitle");
@@ -119,3 +119,8 @@ class TaskList {
 }
 
 new TaskList();
+*/
+
+import { soma } from "./soma";
+
+alert(soma(1, 9));

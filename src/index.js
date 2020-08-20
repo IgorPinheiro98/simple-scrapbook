@@ -1,4 +1,6 @@
-/*class TaskList {
+import api from "./services/api";
+
+class TaskList {
   constructor() {
     this.titleInput = document.getElementById("messageTitle");
     this.editTitleInput = document.getElementById("editMessageTitle");
@@ -10,11 +12,16 @@
 
     this.scraps = [];
 
+    this.getScraps();
+
     this.registerAddScrapBtnEvent();
   }
 
-  generateScrapId() {
-    return this.scraps.length + 1;
+  async getScraps() {
+    const { data: scraps } = await api.get("/scraps");
+
+    this.scraps = scraps;
+    this.renderScraps();
   }
 
   registerAddScrapBtnEvent() {
@@ -47,10 +54,16 @@
     this.setButtonEvents();
   }
 
-  addNewScrap() {
-    const id = this.generateScrapId();
-    const title = this.titleInput.value;
-    const message = this.messageInput.value;
+  async addNewScrap() {
+    const newTitle = this.titleInput.value;
+    const newMessage = this.messageInput.value;
+
+    const {
+      data: { id, title, message },
+    } = await api.post("/scraps", {
+      title: newTitle,
+      message: newMessage,
+    });
 
     this.titleInput.value = "";
     this.messageInput.value = "";
@@ -60,11 +73,12 @@
     this.renderScraps();
   }
 
-  deleteScrap(event) {
+  async deleteScrap(event) {
     event.path[2].remove();
-
+      const {
+       data: {id} = await api.delete(`/scraps/id`)
+    }
     const scrapId = event.path[2].getAttribute("id-scrap");
-
     const scrapIndex = this.scraps.findIndex((item) => {
       return item.id == scrapId;
     });
@@ -119,8 +133,3 @@
 }
 
 new TaskList();
-*/
-
-import { soma } from "./soma";
-
-alert(soma(1, 9));
